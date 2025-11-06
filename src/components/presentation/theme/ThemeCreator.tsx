@@ -303,11 +303,11 @@ export function ThemeCreator({ children }: { children?: ReactNode }) {
 
                                   <div className="mt-2 text-xs text-muted-foreground">
                                     <p>
-                                      Heading:{" "}
+                                      标题:{" "}
                                       {themeData.fonts.heading.split(",")[0]}
                                     </p>
                                     <p>
-                                      Body: {themeData.fonts.body.split(",")[0]}
+                                      正文: {themeData.fonts.body.split(",")[0]}
                                     </p>
                                   </div>
                                 </div>

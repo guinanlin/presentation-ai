@@ -3,7 +3,8 @@ import { db } from "@/server/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { type DefaultSession, type Session } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
@@ -71,7 +72,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
     async signIn({ user, account }) {
-      if (account?.provider === "google") {
+      // For credentials provider, user data is already set in authorize
+      if (account?.provider === "credentials") {
         const dbUser = await db.user.findUnique({
           where: { email: user.email! },
           select: { id: true, hasAccess: true, role: true },
@@ -92,9 +94,43 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("请提供邮箱和密码");
+        }
+
+        const user = await db.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user || !user.password) {
+          throw new Error("用户不存在或密码未设置");
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
+
+        if (!isPasswordValid) {
+          throw new Error("密码错误");
+        }
+
+        return {
+          id: user.id,
+          email: user.email!,
+          name: user.name,
+          image: user.image,
+          hasAccess: user.hasAccess,
+          role: user.role,
+        };
+      },
     }),
   ],
 });

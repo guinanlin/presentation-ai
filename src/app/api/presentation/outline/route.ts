@@ -102,6 +102,12 @@ export async function POST(req: Request) {
       .replace(/{currentDate}/g, currentDate)
       .replace(/{prompt}/g, prompt);
 
+    console.log("Outline generation request:", {
+      modelProvider,
+      modelId: modelId || "default",
+      promptLength: prompt.length,
+    });
+
     const result = streamText({
       model,
       prompt: formattedPrompt,
@@ -110,9 +116,22 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
   } catch (error) {
     console.error("Error in outline generation:", error);
-    return NextResponse.json(
-      { error: "Failed to generate outline" },
-      { status: 500 },
-    );
+    
+    // Provide more detailed error information
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Unknown error occurred";
+    
+    const errorDetails = {
+      error: "Failed to generate outline",
+      message: errorMessage,
+      modelProvider,
+      modelId: modelId || "default",
+    };
+
+    console.error("Error details:", errorDetails);
+
+    return NextResponse.json(errorDetails, { status: 500 });
   }
 }

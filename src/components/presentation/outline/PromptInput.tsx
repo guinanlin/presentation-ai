@@ -12,7 +12,7 @@ export function PromptInput() {
 
   const handleGenerateOutline = () => {
     if (!presentationInput.trim()) {
-      toast.error("Please enter a presentation topic");
+      toast.error("请输入演示文稿主题");
       return;
     }
 
@@ -26,7 +26,7 @@ export function PromptInput() {
         value={presentationInput}
         onChange={(e) => setPresentationInput(e.target.value)}
         className="w-full rounded-md bg-muted px-4 py-3 pr-12 text-foreground outline-none focus:ring-2 focus:ring-indigo-400"
-        placeholder="Enter your presentation topic..."
+        placeholder="输入您的演示文稿主题..."
         disabled={isGeneratingOutline}
       />
       <button

@@ -90,7 +90,7 @@ export function OutlineList() {
             Math.max(...items.map((item) => parseInt(item.id, 10))) + 1
           ).toString()
         : "1";
-    const newItems = [...items, { id: newId, title: "New Card" }];
+    const newItems = [...items, { id: newId, title: "新卡片" }];
     setItems(newItems);
     // Update the outline in the store
     setOutline(newItems.map((item) => item.title));
@@ -160,15 +160,15 @@ export function OutlineList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm text-foreground">Outline</h2>
+        <h2 className="text-sm text-foreground">大纲</h2>
         {isGeneratingOutline && (
           <span className="animate-pulse text-xs text-muted-foreground">
-            Generating outline...
+            正在生成大纲...
           </span>
         )}
         {webSearchEnabled && items.length === 0 && !isGeneratingOutline && (
           <span className="text-xs text-muted-foreground">
-            Ready to generate
+            准备生成
           </span>
         )}
       </div>
@@ -181,11 +181,11 @@ export function OutlineList() {
         className="flex w-full items-center justify-center gap-2 rounded-md bg-muted/50 py-3 text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
       >
         <Plus size={20} />
-        Add card
+        添加卡片
       </button>
 
       <div className="flex justify-between text-sm text-muted-foreground">
-        <span>{items.length} cards total</span>
+        <span>共 {items.length} 张卡片</span>
         <span>
           {items.reduce((acc, item) => acc + item.title.length, 0)}/20000
         </span>

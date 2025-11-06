@@ -17,7 +17,7 @@ export function PresentationInput({
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-sm font-semibold text-foreground">
-          What would you like to present about?
+          您想要演示什么主题？
         </h2>
         <Button
           variant="outline"
@@ -26,7 +26,7 @@ export function PresentationInput({
           className="gap-2 shrink-0"
         >
           <Sparkles className="h-3.5 w-3.5" />
-          Templates
+          模板
         </Button>
       </div>
 
@@ -40,13 +40,13 @@ export function PresentationInput({
               handleGenerate();
             }
           }}
-          placeholder="Describe your topic or paste your content here. Our AI will structure it into a compelling presentation."
+          placeholder="描述您的主题或粘贴您的内容。我们的 AI 将把它组织成引人入胜的演示文稿。"
           className="h-40 w-full resize-none rounded-lg border border-border bg-card px-4 py-3.5 pb-14 text-base text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
         />
 
         <div className="absolute flex justify-between items-center bottom-3 inset-x-3 z-10">
           <p className="text-xs text-muted-foreground">
-            Press{" "}
+            按{" "}
             <kbd className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-[10px] border border-border">
               Ctrl
             </kbd>{" "}
@@ -54,7 +54,7 @@ export function PresentationInput({
             <kbd className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-[10px] border border-border">
               Enter
             </kbd>{" "}
-            to generate
+            生成
           </p>
           <WebSearchToggle />
         </div>

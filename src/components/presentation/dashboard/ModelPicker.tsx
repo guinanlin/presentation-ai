@@ -77,8 +77,8 @@ export function ModelPicker({
         : `lm-studio ${model.name}`,
     icon: model.provider === "ollama" ? Cpu : Monitor,
     description: isDownloadable
-      ? `Downloadable ${model.provider === "ollama" ? "Ollama" : "LM Studio"} model (will auto-download)`
-      : `Local ${model.provider === "ollama" ? "Ollama" : "LM Studio"} model`,
+      ? `可下载的 ${model.provider === "ollama" ? "Ollama" : "LM Studio"} 模型（将自动下载）`
+      : `本地 ${model.provider === "ollama" ? "Ollama" : "LM Studio"} 模型`,
     isDownloadable,
   });
 
@@ -124,7 +124,7 @@ export function ModelPicker({
     }
 
     return {
-      label: "Select model",
+      label: "选择模型",
       icon: Bot,
     };
   };
@@ -156,7 +156,7 @@ export function ModelPicker({
     <div>
       {shouldShowLabel && (
         <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Text Model
+          文本模型
         </label>
       )}
       <Select value={getCurrentModelValue()} onValueChange={handleModelChange}>
@@ -176,16 +176,16 @@ export function ModelPicker({
           {/* Loading indicator when fetching models */}
           {isLoading && !isInitialLoad && (
             <SelectGroup>
-              <SelectLabel>Loading Models</SelectLabel>
+              <SelectLabel>正在加载模型</SelectLabel>
               <SelectItem value="loading" disabled>
                 <div className="flex items-center gap-3">
                   <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin" />
                   <div className="flex flex-col min-w-0">
                     <span className="truncate text-sm">
-                      Refreshing models...
+                      正在刷新模型...
                     </span>
                     <span className="text-xs text-muted-foreground truncate">
-                      Checking for new models
+                      正在检查新模型
                     </span>
                   </div>
                 </div>
@@ -195,14 +195,14 @@ export function ModelPicker({
 
           {/* OpenAI Group */}
           <SelectGroup>
-            <SelectLabel>Cloud Models</SelectLabel>
+            <SelectLabel>云端模型</SelectLabel>
             <SelectItem value="openai">
               <div className="flex items-center gap-3">
                 <Bot className="h-4 w-4 flex-shrink-0" />
                 <div className="flex flex-col min-w-0">
                   <span className="truncate text-sm">GPT-4o-mini</span>
                   <span className="text-xs text-muted-foreground truncate">
-                    Cloud-based AI model
+                    基于云端的 AI 模型
                   </span>
                 </div>
               </div>
@@ -212,7 +212,7 @@ export function ModelPicker({
           {/* Local Ollama Models */}
           {ollamaModels.length > 0 && (
             <SelectGroup>
-              <SelectLabel>Local Ollama Models</SelectLabel>
+              <SelectLabel>本地 Ollama 模型</SelectLabel>
               {ollamaModels.map((model) => {
                 const option = createModelOption(model);
                 const Icon = option.icon;
@@ -238,7 +238,7 @@ export function ModelPicker({
           {/* Local LM Studio Models */}
           {lmStudioModels.length > 0 && (
             <SelectGroup>
-              <SelectLabel>Local LM Studio Models</SelectLabel>
+              <SelectLabel>本地 LM Studio 模型</SelectLabel>
               {lmStudioModels.map((model) => {
                 const option = createModelOption(model);
                 const Icon = option.icon;
@@ -264,7 +264,7 @@ export function ModelPicker({
           {/* Downloadable Ollama Models */}
           {showDownloadable && downloadableOllamaModels.length > 0 && (
             <SelectGroup>
-              <SelectLabel>Downloadable Ollama Models</SelectLabel>
+              <SelectLabel>可下载的 Ollama 模型</SelectLabel>
               {downloadableOllamaModels.map((model) => {
                 const option = createModelOption(model, true);
                 const Icon = option.icon;

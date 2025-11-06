@@ -158,11 +158,11 @@ export function PresentationGenerationManager() {
                   ),
                 );
               } else {
-                failRootImageGeneration(slideId, "No image url returned");
+                failRootImageGeneration(slideId, "未返回图片 URL");
               }
             } catch (err) {
-              const message =
-                err instanceof Error ? err.message : "Image generation failed";
+                const message =
+                err instanceof Error ? err.message : "图片生成失败";
               failRootImageGeneration(slideId, message);
             }
           })();
@@ -347,7 +347,10 @@ export function PresentationGenerationManager() {
       }
     },
     onError: (error) => {
-      toast.error("Failed to generate outline: " + error.message);
+      console.error("Outline generation error:", error);
+      const errorMessage =
+        error?.message || error?.toString() || "发生错误。";
+      toast.error("生成大纲失败：" + errorMessage);
       resetGeneration();
 
       // Cancel any pending outline animation frame
@@ -431,7 +434,7 @@ export function PresentationGenerationManager() {
         setShouldStartPresentationGeneration(false);
       },
       onError: (error) => {
-        toast.error("Failed to generate presentation: " + error.message);
+        toast.error("生成演示文稿失败：" + error.message);
         resetGeneration();
         streamingParserRef.current.reset();
 
@@ -452,7 +455,7 @@ export function PresentationGenerationManager() {
         }
       } catch (error) {
         console.error("Error processing presentation XML:", error);
-        toast.error("Error processing presentation content");
+        toast.error("处理演示文稿内容时出错");
       }
     }
   }, [presentationCompletion]);
@@ -541,11 +544,11 @@ export function PresentationGenerationManager() {
                   ),
                 );
               } else {
-                failRootImageGeneration(slideId, "No image url returned");
+                failRootImageGeneration(slideId, "未返回图片 URL");
               }
             } catch (err) {
-              const message =
-                err instanceof Error ? err.message : "Image generation failed";
+                const message =
+                err instanceof Error ? err.message : "图片生成失败";
               failRootImageGeneration(slideId, message);
             }
           })();

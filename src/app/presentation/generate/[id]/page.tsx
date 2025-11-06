@@ -56,7 +56,7 @@ export default function PresentationGenerateWithIdPage() {
       queryFn: async () => {
         const result = await getPresentation(id);
         if (!result.success) {
-          throw new Error(result.message ?? "Failed to load presentation");
+          throw new Error(result.message ?? "加载演示文稿失败");
         }
         return result.presentation;
       },
@@ -200,8 +200,8 @@ export default function PresentationGenerateWithIdPage() {
             <Spinner className="h-10 w-10 text-primary" />
           </div>
           <div className="space-y-2 text-center">
-            <h2 className="text-2xl font-bold">Loading Presentation Outline</h2>
-            <p className="text-muted-foreground">Please wait a moment...</p>
+            <h2 className="text-2xl font-bold">正在加载演示文稿大纲</h2>
+            <p className="text-muted-foreground">请稍候...</p>
           </div>
         </div>
       </ThemeBackground>
@@ -215,7 +215,7 @@ export default function PresentationGenerateWithIdPage() {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4" />
-        Back
+        返回
       </Button>
 
       <div className="flex flex-row justify-center">
@@ -228,13 +228,13 @@ export default function PresentationGenerateWithIdPage() {
             <ThinkingDisplay
               thinking={outlineThinking}
               isGenerating={isGeneratingOutline}
-              title="AI is thinking about your outline..."
+              title="AI 正在思考您的大纲..."
             />
             <ToolCallDisplay />
             <OutlineList />
 
             <div className="!mb-32 space-y-4 rounded-lg border bg-muted/30 p-6">
-              <h2 className="text-lg font-semibold">Customize Theme</h2>
+              <h2 className="text-lg font-semibold">自定义主题</h2>
               <ThemeSettings />
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function PresentationGenerateWithIdPage() {
           disabled={isGeneratingPresentation}
         >
           <Wand2 className="h-5 w-5" />
-          {isGeneratingPresentation ? "Generating..." : "Generate Presentation"}
+          {isGeneratingPresentation ? "正在生成..." : "生成演示文稿"}
         </Button>
       </div>
     </ThemeBackground>

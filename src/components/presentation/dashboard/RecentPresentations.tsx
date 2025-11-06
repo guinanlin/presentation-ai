@@ -84,28 +84,28 @@ export function RecentPresentations() {
       await queryClient.invalidateQueries({ queryKey: ["recent-items"] });
       setDeleteDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Presentation deleted successfully",
+        title: "成功",
+        description: "演示文稿已成功删除",
       });
     },
     onError: (error) => {
       console.error("Failed to delete presentation:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to delete presentation",
+        title: "错误",
+        description: "删除演示文稿失败",
       });
     },
   });
 
   const { mutate: renameMutation } = useMutation({
     mutationFn: async (params: { id: string; currentTitle: string }) => {
-      const newTitle = prompt("Enter new title", params.currentTitle || "");
+      const newTitle = prompt("输入新标题", params.currentTitle || "");
       if (!newTitle) return null;
 
       const result = await updatePresentationTitle(params.id, newTitle);
       if (!result.success) {
-        throw new Error(result.message ?? "Failed to rename presentation");
+        throw new Error(result.message ?? "重命名演示文稿失败");
       }
       return result;
     },
@@ -113,16 +113,16 @@ export function RecentPresentations() {
       await queryClient.invalidateQueries({ queryKey: ["presentations-all"] });
       await queryClient.invalidateQueries({ queryKey: ["recent-items"] });
       toast({
-        title: "Success",
-        description: "Presentation renamed successfully",
+        title: "成功",
+        description: "演示文稿已成功重命名",
       });
     },
     onError: (error) => {
-      console.error("Failed to rename presentation:", error);
+      console.error("重命名演示文稿失败:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to rename presentation",
+        title: "错误",
+        description: "重命名演示文稿失败",
       });
     },
   });
@@ -154,8 +154,8 @@ export function RecentPresentations() {
       console.error("Failed to navigate:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to open presentation",
+        title: "错误",
+        description: "打开演示文稿失败",
       });
     } finally {
       setIsNavigating(null);
@@ -173,7 +173,7 @@ export function RecentPresentations() {
           <div className="flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
             <h2 className="text-xl font-semibold text-foreground">
-              Recent Presentations
+              最近的演示文稿
             </h2>
           </div>
           <Button
@@ -181,7 +181,7 @@ export function RecentPresentations() {
             disabled
             className="gap-2 text-primary hover:text-primary/80"
           >
-            View all
+            查看全部
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
@@ -240,9 +240,9 @@ export function RecentPresentations() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-semibold text-foreground">
-            Recent Presentations
-          </h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              最近的演示文稿
+            </h2>
         </div>
         <Button
           variant="outline"
@@ -269,7 +269,7 @@ export function RecentPresentations() {
                   height={200}
                   width={300}
                   src={presentation.thumbnailUrl}
-                  alt={presentation.title || "Presentation thumbnail"}
+                  alt={presentation.title || "演示文稿缩略图"}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
@@ -292,13 +292,13 @@ export function RecentPresentations() {
               >
                 <h3 className="line-clamp-1 text-lg font-semibold text-foreground">
                   {isNavigating === presentation.id
-                    ? "Loading..."
-                    : presentation.title || "Untitled Presentation"}
+                    ? "加载中..."
+                    : presentation.title || "未命名演示文稿"}
                 </h3>
                 <div className="flex items-center text-xs text-muted-foreground">
                   <Calendar className="mr-1 h-3.5 w-3.5" />
                   {isNavigating === presentation.id
-                    ? "Loading..."
+                    ? "加载中..."
                     : formatDate(presentation.updatedAt)}
                 </div>
               </div>
@@ -322,14 +322,14 @@ export function RecentPresentations() {
                     className="cursor-pointer"
                   >
                     <Pencil className="mr-2 h-4 w-4" />
-                    Rename
+                    重命名
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleDelete(presentation.id)}
                     className="cursor-pointer text-destructive"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
+                    删除
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -341,14 +341,13 @@ export function RecentPresentations() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>确定要删除吗？</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              presentation.
+              此操作无法撤销。这将永久删除您的演示文稿。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction
               onClick={() =>
                 selectedPresentationId &&
@@ -356,7 +355,7 @@ export function RecentPresentations() {
               }
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

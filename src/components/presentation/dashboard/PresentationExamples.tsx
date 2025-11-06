@@ -193,7 +193,7 @@ export function PresentationExamples() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-          Try these examples
+          试试这些示例
         </h3>
         <Button
           variant="outline"
@@ -202,7 +202,7 @@ export function PresentationExamples() {
           className="gap-2"
         >
           <Shuffle className="h-4 w-4" />
-          Shuffle
+          随机
         </Button>
       </div>
 

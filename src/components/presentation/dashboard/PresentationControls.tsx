@@ -32,7 +32,7 @@ export function PresentationControls({
       <div>
         {shouldShowLabel && (
           <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Number of slides
+            幻灯片数量
           </label>
         )}
         <Select
@@ -40,12 +40,12 @@ export function PresentationControls({
           onValueChange={(v) => setNumSlides(Number(v))}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select number of slides" />
+            <SelectValue placeholder="选择幻灯片数量" />
           </SelectTrigger>
           <SelectContent>
             {[1, 2, 3, 4, 5, 6, 7, 8, 10, 12].map((num) => (
               <SelectItem key={num} value={String(num)}>
-                {num} slides
+                {num} 张幻灯片
               </SelectItem>
             ))}
           </SelectContent>
@@ -56,12 +56,12 @@ export function PresentationControls({
       <div>
         {shouldShowLabel && (
           <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Language
+            语言
           </label>
         )}
         <Select value={language} onValueChange={setLanguage}>
           <SelectTrigger>
-            <SelectValue placeholder="Select language" />
+            <SelectValue placeholder="选择语言" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="en-US">English (US)</SelectItem>
@@ -72,7 +72,7 @@ export function PresentationControls({
             <SelectItem value="it">Italian</SelectItem>
             <SelectItem value="ja">Japanese</SelectItem>
             <SelectItem value="ko">Korean</SelectItem>
-            <SelectItem value="zh">Chinese</SelectItem>
+            <SelectItem value="zh">中文</SelectItem>
             <SelectItem value="ru">Russian</SelectItem>
             <SelectItem value="hi">Hindi</SelectItem>
             <SelectItem value="ar">Arabic</SelectItem>
@@ -84,30 +84,30 @@ export function PresentationControls({
       <div>
         {shouldShowLabel && (
           <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Page style
+            页面样式
           </label>
         )}
         <Select value={pageStyle} onValueChange={setPageStyle}>
           <SelectTrigger>
             <div className="flex items-center gap-2">
               <Layout className="h-4 w-4" />
-              <SelectValue placeholder="Select page style" />
+              <SelectValue placeholder="选择页面样式" />
             </div>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="default">
               <div className="flex items-center gap-3">
-                <span>Default</span>
+                <span>默认</span>
               </div>
             </SelectItem>
             <SelectItem value="traditional">
               <div className="flex items-center gap-3">
-                <span>Traditional</span>
+                <span>传统</span>
               </div>
             </SelectItem>
             <SelectItem value="tall">
               <div className="flex items-center gap-3">
-                <span>Tall</span>
+                <span>高版</span>
               </div>
             </SelectItem>
           </SelectContent>

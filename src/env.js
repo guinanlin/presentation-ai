@@ -10,10 +10,12 @@ export const env = createEnv({
       .default("development"),
 
     OPENAI_API_KEY: z.string(),
+    OPENAI_BASE_URL: z.string().url().optional(),
     TOGETHER_AI_API_KEY: z.string(),
-    GOOGLE_CLIENT_ID: z.string(),
-    GOOGLE_CLIENT_SECRET: z.string(),
     UNSPLASH_ACCESS_KEY: z.string(),
+    // Model provider base URLs (optional, with defaults)
+    OLLAMA_BASE_URL: z.string().url().optional(),
+    LMSTUDIO_BASE_URL: z.string().url().optional(),
     NEXTAUTH_URL: z.preprocess(
       (str) => process.env.VERCEL_URL ?? str,
       process.env.VERCEL ? z.string() : z.string().url(),
@@ -26,13 +28,14 @@ export const env = createEnv({
 
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
     TAVILY_API_KEY: process.env.TAVILY_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_BASE_URL: process.env.OPENAI_BASE_URL,
     TOGETHER_AI_API_KEY: process.env.TOGETHER_AI_API_KEY,
+    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL,
+    LMSTUDIO_BASE_URL: process.env.LMSTUDIO_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },

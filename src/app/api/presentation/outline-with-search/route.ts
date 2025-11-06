@@ -102,6 +102,12 @@ export async function POST(req: Request) {
     // Create model based on selection
     const model = modelPicker(modelProvider, modelId);
 
+    console.log("Outline generation with search request:", {
+      modelProvider,
+      modelId: modelId || "default",
+      promptLength: prompt.length,
+    });
+
     const result = streamText({
       model,
       system: outlineSystemPrompt
@@ -124,9 +130,22 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
   } catch (error) {
     console.error("Error in outline generation with search:", error);
-    return NextResponse.json(
-      { error: "Failed to generate outline with search" },
-      { status: 500 },
-    );
+    
+    // Provide more detailed error information
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Unknown error occurred";
+    
+    const errorDetails = {
+      error: "Failed to generate outline with search",
+      message: errorMessage,
+      modelProvider,
+      modelId: modelId || "default",
+    };
+
+    console.error("Error details:", errorDetails);
+
+    return NextResponse.json(errorDetails, { status: 500 });
   }
 }

@@ -12,19 +12,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function SignIn() {
-  const searchParams = useSearchParams();
+export default function SignUp() {
   const router = useRouter();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/presentation";
-  const error = searchParams.get("error");
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(error || "");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,24 +29,44 @@ export default function SignIn() {
     setErrorMessage("");
 
     try {
+      // 注册用户
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name: name || undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.error || "注册失败，请重试");
+        setIsLoading(false);
+        return;
+      }
+
+      // 注册成功后自动登录
       const result = await signIn("credentials", {
         email,
         password,
-        callbackUrl,
+        callbackUrl: "/presentation",
         redirect: false,
       });
 
       if (result?.error) {
-        setErrorMessage(result.error === "CredentialsSignin" 
-          ? "邮箱或密码错误" 
-          : result.error);
+        setErrorMessage("注册成功，但登录失败。请手动登录。");
+        router.push("/auth/signin");
       } else if (result?.ok) {
-        router.push(callbackUrl);
+        router.push("/presentation");
         router.refresh();
       }
     } catch (error) {
-      setErrorMessage("登录失败，请重试");
-    } finally {
+      setErrorMessage("注册失败，请重试");
       setIsLoading(false);
     }
   };
@@ -58,21 +75,32 @@ export default function SignIn() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-slate-900 px-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">欢迎回来</CardTitle>
-          <CardDescription>登录您的账户以继续</CardDescription>
-          {(errorMessage || error) && (
+          <CardTitle className="text-2xl font-bold">创建账户</CardTitle>
+          <CardDescription>
+            输入您的信息以创建新账户
+          </CardDescription>
+          {errorMessage && (
             <div
               className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
               role="alert"
             >
-              <span className="block sm:inline">
-                {errorMessage || "认证错误，请重试"}
-              </span>
+              <span className="block sm:inline">{errorMessage}</span>
             </div>
           )}
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">姓名（可选）</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="您的姓名"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
             <div className="grid gap-2">
               <Label htmlFor="email">邮箱</Label>
               <Input
@@ -90,26 +118,27 @@ export default function SignIn() {
               <Input
                 id="password"
                 type="password"
-                placeholder="请输入密码"
+                placeholder="至少6个字符"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={6}
                 disabled={isLoading}
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "登录中..." : "登录"}
+              {isLoading ? "注册中..." : "注册"}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col items-center justify-center gap-2">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            还没有账户？{" "}
+            已有账户？{" "}
             <a
-              href="/auth/signup"
+              href="/auth/signin"
               className="text-primary hover:underline"
             >
-              立即注册
+              立即登录
             </a>
           </p>
         </CardFooter>
@@ -117,3 +146,4 @@ export default function SignIn() {
     </div>
   );
 }
+

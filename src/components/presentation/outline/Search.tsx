@@ -20,7 +20,7 @@ export function Searching({ query }: { query: string }) {
         <Loader2 className="h-5 w-5 animate-spin" />
         <div className="flex-1">
           <p className="text-sm font-medium">
-            Searching the web for &quot;{query}&quot;
+            正在搜索 &quot;{query}&quot;
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export function Searched({
                 {query}
               </span>
               <span className="text-xs text-muted-foreground">
-                {results?.length} results found
+                找到 {results?.length} 个结果
               </span>
             </div>
           </div>

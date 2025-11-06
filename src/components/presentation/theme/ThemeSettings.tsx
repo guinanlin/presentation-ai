@@ -40,9 +40,9 @@ export function ThemeSettings() {
     <div className="space-y-6">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <Label className="text-sm font-medium">Theme & Layout</Label>
+          <Label className="text-sm font-medium">主题和布局</Label>
           <ThemeModal>
-            <Button variant={"link"}>More Themes</Button>
+            <Button variant={"link"}>更多主题</Button>
           </ThemeModal>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -112,9 +112,9 @@ export function ThemeSettings() {
                   style={{ color: modeColors.muted }}
                 >
                   <span className="block">
-                    Heading: {themeOption.fonts.heading}
+                    标题: {themeOption.fonts.heading}
                   </span>
-                  <span className="block">Body: {themeOption.fonts.body}</span>
+                  <span className="block">正文: {themeOption.fonts.body}</span>
                 </div>
               </button>
             );
@@ -134,15 +134,19 @@ export function ThemeSettings() {
       />
 
       <div className="space-y-4">
-        <Label className="text-sm font-medium">Presentation Style</Label>
+        <Label className="text-sm font-medium">演示风格</Label>
         <Select defaultValue="professional">
           <SelectTrigger>
-            <SelectValue placeholder="Select style" />
+            <SelectValue placeholder="选择风格" />
           </SelectTrigger>
           <SelectContent>
             {PRESENTATION_STYLES.map((style) => (
               <SelectItem key={style.value} value={style.value}>
-                {style.label}
+                {style.label === "Professional" ? "专业" :
+                 style.label === "Creative" ? "创意" :
+                 style.label === "Minimal" ? "简约" :
+                 style.label === "Bold" ? "大胆" :
+                 style.label === "Elegant" ? "优雅" : style.label}
               </SelectItem>
             ))}
           </SelectContent>

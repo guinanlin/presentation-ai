@@ -20,7 +20,7 @@ interface ThinkingDisplayProps {
 export function ThinkingDisplay({
   thinking,
   isGenerating: _isGenerating,
-  title = "AI is thinking...",
+  title = "AI 正在思考...",
 }: ThinkingDisplayProps) {
   const extractThinkingContent = (text: string): string => {
     return text
@@ -80,7 +80,7 @@ export function ThinkingDisplay({
                 >
                   {thinkingContent || (
                     <div className="animate-pulse text-muted-foreground/70">
-                      Processing your request...
+                      正在处理您的请求...
                     </div>
                   )}
                 </motion.div>
