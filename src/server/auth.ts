@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import { db } from "@/server/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { type DefaultSession, type Session } from "next-auth";
@@ -105,8 +104,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           throw new Error("请提供邮箱和密码");
         }
 
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+
         const user = await db.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
 
         if (!user || !user.password) {
@@ -114,7 +116,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         }
 
         const isPasswordValid = await bcrypt.compare(
-          credentials.password,
+          password,
           user.password,
         );
 

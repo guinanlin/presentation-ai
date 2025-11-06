@@ -47,7 +47,7 @@ export default function SignIn() {
         router.push(callbackUrl);
         router.refresh();
       }
-    } catch (error) {
+    } catch (_error) {
       setErrorMessage("登录失败，请重试");
     } finally {
       setIsLoading(false);

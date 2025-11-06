@@ -50,6 +50,9 @@ Make sure the topics:
 8. Include exactly 2-3 bullet points per topic (not more, not less)`;
 
 export async function POST(req: Request) {
+  let modelProvider = "openai";
+  let modelId: string | undefined;
+  
   try {
     const session = await auth();
     if (!session) {
@@ -60,9 +63,12 @@ export async function POST(req: Request) {
       prompt,
       numberOfCards,
       language,
-      modelProvider = "openai",
-      modelId,
+      modelProvider: requestedModelProvider = "openai",
+      modelId: requestedModelId,
     } = (await req.json()) as OutlineRequest;
+    
+    modelProvider = requestedModelProvider;
+    modelId = requestedModelId;
 
     if (!prompt || !numberOfCards || !language) {
       return NextResponse.json(
