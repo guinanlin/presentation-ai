@@ -55,6 +55,9 @@ Example:
 Remember: Use web search strategically to enhance the outline with current, relevant information.`;
 
 export async function POST(req: Request) {
+  let modelProvider = "openai";
+  let modelId: string | undefined;
+  
   try {
     const session = await auth();
     if (!session) {
@@ -65,9 +68,12 @@ export async function POST(req: Request) {
       prompt,
       numberOfCards,
       language,
-      modelProvider = "openai",
-      modelId,
+      modelProvider: requestedModelProvider = "openai",
+      modelId: requestedModelId,
     } = (await req.json()) as OutlineRequest;
+    
+    modelProvider = requestedModelProvider;
+    modelId = requestedModelId;
 
     if (!prompt || !numberOfCards || !language) {
       return NextResponse.json(
