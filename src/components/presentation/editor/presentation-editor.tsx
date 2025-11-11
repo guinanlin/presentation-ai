@@ -125,7 +125,7 @@ const PresentationEditor = React.memo(
       <TooltipProvider>
         <div
           className={cn(
-            "flex min-h-[500px]",
+            "flex h-full w-full",
             "scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30 overflow-hidden p-0 scrollbar-thin scrollbar-track-transparent",
             "relative text-foreground",
             "focus-within:ring-2 focus-within:ring-primary focus-within:ring-opacity-50",
@@ -177,7 +177,7 @@ const PresentationEditor = React.memo(
               <Editor
                 className={cn(
                   className,
-                  "flex flex-col border-none !bg-transparent py-12 outline-none h-full",
+                  "flex h-full flex-col border-none !bg-transparent py-12 outline-none",
                   (readOnly || isGenerating) && "px-16",
                   !initialContent?.alignment && "justify-center",
                   initialContent?.alignment === "start" && "justify-start",
