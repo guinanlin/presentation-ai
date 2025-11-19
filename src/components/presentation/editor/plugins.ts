@@ -80,6 +80,7 @@ import {
   SequenceArrowItemPlugin,
 } from "./plugins/sequence-arrow-plugin";
 import { TimelineItemPlugin, TimelinePlugin } from "./plugins/timeline-plugin";
+import { DivPlugin } from "./plugins/div-plugin";
 // import { TablePlugin, TableRowPlugin, TableCellPlugin } from "./plugins/table-plugin";
 
 export const presentationPlugins = [
@@ -184,4 +185,5 @@ export const presentationPlugins = [
 
   GeneratingPlugin,
   ButtonPlugin,
+  DivPlugin,
 ];

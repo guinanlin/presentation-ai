@@ -71,6 +71,7 @@ import {
   type TSequenceArrowGroupElement,
   type TSequenceArrowItemElement,
 } from "../editor/plugins/sequence-arrow-plugin";
+import { type TDivElement } from "../editor/plugins/div-plugin";
 import {
   type GeneratingText,
   type HeadingElement,
@@ -118,7 +119,8 @@ export type PlateNode =
   | TButtonElement
   | TTableElement
   | TTableRowElement
-  | TTableCellElement;
+  | TTableCellElement
+  | TDivElement;
 
 export type LayoutType = "left" | "right" | "vertical" | "background";
 export type RootImage = {
@@ -174,7 +176,7 @@ export class SlideParser {
     const isFullContent =
       chunk.length >= this.lastInputLength &&
       chunk.substring(0, this.lastInputLength) ===
-        this.buffer.substring(0, this.lastInputLength);
+      this.buffer.substring(0, this.lastInputLength);
 
     // If we're getting the full content (previous + new),
     // we only want to process what's new
@@ -1083,7 +1085,36 @@ export class SlideParser {
       // If only one child, return it directly
       return children[0] ?? null;
     } else {
-      // If multiple children, wrap in a paragraph
+      // If multiple children, check if any are block elements
+      const hasBlockChildren = children.some((child) => {
+        // Check if child is an element (not text) and is a block type
+        // This is a heuristic - most Plate elements are block by default except marks
+        return (
+          "type" in child &&
+          child.type !== "text" &&
+          // List of known inline types or types that can be in paragraphs
+          ![
+            "b",
+            "strong",
+            "i",
+            "em",
+            "u",
+            "s",
+            "strike",
+            "a",
+            "link",
+            "mention",
+          ].includes(child.type as string)
+        );
+      });
+
+      if (hasBlockChildren) {
+        return {
+          type: "div",
+          children: children as Descendant[],
+        } as unknown as PlateNode;
+      }
+
       return {
         type: "p",
         children: children as Descendant[],
@@ -1451,13 +1482,13 @@ export class SlideParser {
               cellChildren.length > 0
                 ? cellChildren
                 : ([
-                    {
-                      type: "p",
-                      children: [
-                        { text: cellNode.content?.trim?.() || "" } as TText,
-                      ],
-                    },
-                  ] as unknown as Descendant[]),
+                  {
+                    type: "p",
+                    children: [
+                      { text: cellNode.content?.trim?.() || "" } as TText,
+                    ],
+                  },
+                ] as unknown as Descendant[]),
           } as unknown as TTableCellElement;
 
           cells.push(cell);
@@ -1643,8 +1674,8 @@ export class SlideParser {
 
     const variant: "filled" | "outline" | "ghost" | undefined =
       variantAttr === "filled" ||
-      variantAttr === "outline" ||
-      variantAttr === "ghost"
+        variantAttr === "outline" ||
+        variantAttr === "ghost"
         ? (variantAttr as "filled" | "outline" | "ghost")
         : undefined;
 
@@ -1787,7 +1818,7 @@ export class SlideParser {
     const plateNodes: PlateNode[] = [];
 
     // Scan through nodes to group consecutive LI tags into a single generic list (Plate list) group
-    for (let i = 0; i < nodes.length; ) {
+    for (let i = 0; i < nodes.length;) {
       const node = nodes[i];
       if (!node) {
         i += 1;

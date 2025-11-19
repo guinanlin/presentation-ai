@@ -51,14 +51,16 @@ export function modelPicker(
   }
 
   const openai = createOpenAI(openaiConfig);
-  
+
   // Determine the model ID to use
   // If modelId is provided and doesn't look like an Ollama model name, use it
   // Otherwise, use a default OpenAI-compatible model name
   let finalModelId = modelId || "openai/gpt-4o-mini";
-  
+
   // If modelId looks like an Ollama model (contains colon or starts with llama/mistral/etc),
-  // and we're using OpenAI provider, use default GPT model instead
+  // and we're using OpenAI provider, we used to force default GPT model.
+  // But now we allow it to support OneAPI/custom providers that might use these names.
+  /* 
   if (
     modelId &&
     (modelId.includes(":") ||
@@ -75,7 +77,8 @@ export function modelPicker(
     );
     finalModelId = "openai/gpt-4o-mini";
   }
-  
+  */
+
   if (env.OPENAI_BASE_URL) {
     console.log("Creating OpenAI model with custom base URL:", {
       baseURL: env.OPENAI_BASE_URL,
@@ -84,6 +87,6 @@ export function modelPicker(
       provider: modelProvider,
     });
   }
-  
+
   return openai(finalModelId) as unknown as LanguageModelV1;
 }

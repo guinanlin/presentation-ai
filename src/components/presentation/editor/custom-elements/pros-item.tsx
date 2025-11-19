@@ -11,7 +11,7 @@ export const ProsItem = (props: PlateElementProps) => {
         background: "linear-gradient(135deg, #27ae60 0%, #229954 100%)",
       }}
     >
-      <PlateElement {...props} className={cn("flex-1")}>
+      <PlateElement {...props} as="div" className={cn("flex-1")}>
         {props.children}
       </PlateElement>
     </div>
