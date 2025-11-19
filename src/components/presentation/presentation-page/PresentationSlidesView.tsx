@@ -108,21 +108,35 @@ export const PresentationSlidesView = ({
                 <div
                   className={cn(
                     `slide-container-${index}`,
-                    isPresenting && "h-screen w-screen",
+                    "flex w-full justify-center",
+                    isPresenting ? "h-full items-center" : "py-8",
                   )}
                 >
-                  <PresentationEditor
-                    initialContent={slide}
-                    className={cn(
-                      "min-h-[300px] rounded-md border",
-                      isPresenting && "h-screen w-screen",
-                    )}
-                    id={slide.id}
-                    autoFocus={index === currentSlideIndex}
-                    slideIndex={index}
-                    isGenerating={isGeneratingPresentation}
-                    readOnly={isPresenting}
-                  />
+                  <div
+                    className="relative w-full"
+                    style={
+                      isPresenting
+                        ? {
+                            maxWidth: "min(100%, calc(100vh * 16 / 9))",
+                            maxHeight: "min(100%, calc(100vw * 9 / 16))",
+                          }
+                        : undefined
+                    }
+                  >
+                    <div className="aspect-[16/9] w-full">
+                      <PresentationEditor
+                        initialContent={slide}
+                        className={cn(
+                          "h-full w-full rounded-xl border bg-background shadow-sm",
+                        )}
+                        id={slide.id}
+                        autoFocus={index === currentSlideIndex}
+                        slideIndex={index}
+                        isGenerating={isGeneratingPresentation}
+                        readOnly={isPresenting}
+                      />
+                    </div>
+                  </div>
                 </div>
               </SlideContainer>
             </div>

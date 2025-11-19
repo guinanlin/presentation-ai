@@ -181,11 +181,15 @@ const MemoPreviewItem = React.memo(
     const handleClick = useCallback(() => onClick(index), [onClick, index]);
     return (
       <SlidePreviewCard index={index} isActive={isActive} onClick={handleClick}>
-        <PresentationEditorStaticView
-          initialContent={slide}
-          className="min-h-[300px] border"
-          id={`preview-${slideId}`}
-        />
+        <div className="relative w-full">
+          <div className="aspect-[16/9] w-full">
+            <PresentationEditorStaticView
+              initialContent={slide}
+              className="h-full w-full rounded-md border bg-background"
+              id={`preview-${slideId}`}
+            />
+          </div>
+        </div>
       </SlidePreviewCard>
     );
   },

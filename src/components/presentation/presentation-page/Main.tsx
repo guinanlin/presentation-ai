@@ -17,6 +17,7 @@ import { usePresentationState } from "@/states/presentation-state";
 import { useQuery } from "@tanstack/react-query";
 import debounce from "lodash.debounce";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LoadingState } from "./Loading";
@@ -27,6 +28,7 @@ export default function PresentationPage() {
   const params = useParams();
   const id = params.id as string;
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
   const [shouldFetchData, setSetShouldFetchData] = useState(true);
   const setCurrentPresentation = usePresentationState(
     (s) => s.setCurrentPresentation,
@@ -63,7 +65,11 @@ export default function PresentationPage() {
   }, [currentSlideIndex]);
 
   // Use React Query to fetch presentation data
-  const { data: presentationData, isLoading } = useQuery({
+  const {
+    data: presentationData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["presentation", id],
     queryFn: async () => {
       const result = await getPresentation(id);
@@ -74,6 +80,18 @@ export default function PresentationPage() {
     },
     enabled: !!id && !isGeneratingPresentation && shouldFetchData,
   });
+
+  useEffect(() => {
+    if (!error) return;
+    if (error instanceof Error && error.message.includes("Unauthorized")) {
+      if (typeof window !== "undefined") {
+        const callbackUrl = encodeURIComponent(window.location.href);
+        router.replace(`/login?callbackUrl=${callbackUrl}`);
+      } else {
+        router.replace("/login");
+      }
+    }
+  }, [error, router]);
 
   // Create a debounced function to update the theme in the database
   const debouncedThemeUpdate = useCallback(
@@ -280,6 +298,27 @@ export default function PresentationPage() {
 
   if (isLoading) {
     return <LoadingState />;
+  }
+
+  if (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "加载演示文稿时发生未知错误，请稍后重试。";
+
+    if (message.includes("Unauthorized")) {
+      return (
+        <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+          即将跳转到登录页面以继续访问此演示文稿…
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+        {message}
+      </div>
+    );
   }
 
   return (
